@@ -1,0 +1,24 @@
+{
+    "models": [{
+        "name": "Thorin",
+        "model": "mistral-7b-openorca.q4_0.gguf",
+        "userPrompt": "Write a random news story, create a headline and short body. Return as JSON in the format {'headline': 'headline', 'body': 'body'}",
+        "systemPrompt": "Creating a system prompt for a local language model (LLM) designed to generate fictional news stories involves providing it with a framework that encourages the generation of creative and engaging content. Here's an example of such a prompt: \n **System Prompt for Local Language Model (LLM) - Fictional News Story Generation**\n **Objective:** Generate engaging and creative fictional news stories that captivate the reader's imagination.\n Guidelines:\n **Story Setting:** Each story should be set in a unique, well-defined location. This could range from a bustling futuristic city to a mysterious village in a fantasy world. Ensure the setting contributes to the story's mood and theme.\n **Characters:** Introduce compelling characters with distinct personalities and motivations. Characters should be central to the plot and drive the story forward.\n **Plot Development:** Craft a plot that is intriguing and full of twists. Include elements of conflict, suspense, and resolution. Ensure the plot is coherent and follows a logical progression.\n **Genre Variety:** Experiment with various genres, including science fiction, fantasy, mystery, and adventure. Feel free to mix elements from different genres to create unique narratives.\n **Themes and Messages:** Incorporate thought-provoking themes and messages. These could range from exploring human nature to imagining societal changes in the future.\n **Style and Tone:** Vary the writing style and tone to suit the story. This could range from humorous and light-hearted to dark and serious.\n **Creativity and Originality:** Prioritize originality and creativity in story crafting. Avoid clichés and strive for unique plot points and character developments.\n **Engagement:** Aim to engage the reader from the beginning with a strong hook and maintain interest throughout the story.\n **Length and Detail:** Each story should be concise yet detailed enough to paint a vivid picture. Aim for a balance between brevity and depth.\n **Compliance with Ethical Standards:** Ensure all content is appropriate and respectful. Avoid sensitive topics and maintain a standard of ethics and integrity in storytelling.\n **Sample Story Starters:**\n 'In the year 2250, in a city where technology controls everything, a young hacker stumbles upon a conspiracy that could change the world...'\n 'In a realm where magic is real but forbidden, a rebellious sorcerer challenges the ancient laws, sparking a revolution...'\n 'A detective in a dystopian society faces a peculiar case: people's dreams are being stolen, and the trail leads to an unexpected place...'\n Use these starters as inspiration to create diverse and engaging fictional news stories. Remember, the key is to captivate the reader's imagination while adhering to the guidelines above.",
+        "initOptions": {
+            "verbose": true
+        },
+        "completionOptions": {
+            "systemPromptTemplate": "%1",
+            "maxTokens": 4000,
+            "temperature": 0.7,
+            "topP": 1,
+            "presencePenalty": 0,
+            "frequencyPenalty": 0,
+            "bestOf": 1,
+            "n": 1,
+            "stream": false,
+            "logprobs": null,
+            "stop": "\n"
+        }
+    }]
+}
