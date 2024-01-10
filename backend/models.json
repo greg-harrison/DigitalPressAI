@@ -31,7 +31,7 @@
             ]
         },
         {
-            "name": "Regin",
+            "name": "Dwalin",
             "model": "mistral-7b-openorca.q4_0.gguf",
             "initOptions": {
                 "verbose": true
@@ -52,11 +52,11 @@
             "messages": [
                 {
                     "role": "system",
-                    "content": "Your job is to perform sentiment analysis on a news story. You will be given a headline and a short body. You must return a sentiment score between -1 and 1, where -1 is negative, 0 is neutral, and 1 is positive. You can use any method you like to perform the analysis, but you must return a score in the format {'score': score}" 
+                    "content": "Your job is to perform sentiment analysis on a news story. You will be given a headline and a short body. You must return a sentiment score between -1 and 1, where -1 is negative, 0 is neutral, and 1 is positive. You can use any method you like to perform the analysis." 
                 },
                 {
                     "role": "user",
-                    "content": "Perform sentiment analysis on the following news story and return in the format { 'score': scoreValue }: " 
+                    "content": "Perform sentiment analysis on the following news story. Return in the format { 'score': scoreValue }, provide no other information: " 
                 }
             ]
         }
