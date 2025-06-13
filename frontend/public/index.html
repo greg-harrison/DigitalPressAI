@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>DigitalPressAI</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; }
+    label { display: block; margin-bottom: 0.5rem; }
+    input { width: 300px; padding: 0.5rem; }
+    button { margin-top: 1rem; }
+    pre { background: #f4f4f4; padding: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>DigitalPressAI Story Generator</h1>
+  <form id="story-form">
+    <label for="prompt">Prompt:</label>
+    <input type="text" id="prompt" required />
+    <button type="submit">Generate</button>
+  </form>
+  <h2>Output</h2>
+  <pre id="output"></pre>
+<script>
+const form = document.getElementById('story-form');
+const output = document.getElementById('output');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const prompt = document.getElementById('prompt').value;
+  output.textContent = 'Generating...';
+  try {
+    const res = await fetch('/story', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt })
+    });
+    if (!res.ok) throw new Error('Request failed');
+    const data = await res.json();
+    output.textContent = JSON.stringify(data, null, 2);
+  } catch (err) {
+    output.textContent = 'Error generating story';
+  }
+});
+</script>
+</body>
+</html>
