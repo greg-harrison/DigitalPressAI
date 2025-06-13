@@ -20,14 +20,22 @@ const start = async (modelName: string, userMessage?: string) => {
 
     if (!modelConfig) throw new Error(`Model ${modelName} not found`);
 
-    const {name, model, messages, initOptions, completionOptions} = modelConfig;
+    const {name, model, messages: modelMessages, initOptions, completionOptions} = modelConfig;
+
+    // Clone messages so we don't mutate the config across requests
+    const messages: PromptMessage[] = JSON.parse(JSON.stringify(modelMessages));
 
     console.log(name)
 
     const initializedModel = await initModel(model, initOptions);
 
     if (userMessage && Array.isArray(messages)) {
-        messages.find((message) => message.role === 'user').content += userMessage;
+        const userMsg = messages.find((message) => message.role === 'user');
+        if (userMsg) {
+            userMsg.content += userMessage;
+        } else {
+            messages.push({ role: 'user', content: userMessage });
+        }
     }
 
     const response = await createCompletion(initializedModel, messages as PromptMessage[], completionOptions);
