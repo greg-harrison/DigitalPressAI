@@ -1,4 +1,3 @@
-import { createCompletion, loadModel, PromptMessage } from 'gpt4all';
 import models from './models.json';
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
@@ -9,10 +8,7 @@ const port = 8080;
 
 const jsonParser = bodyParser.json();
 
-const initModel = async (name: string, options = {}) => {
-    const model = await loadModel(name, { ...options }); 
-    return model;
-}
+const LM_STUDIO_API_URL = process.env.LM_STUDIO_API_URL || 'http://localhost:1234/v1/chat/completions';
 
 const start = async (modelName: string, userMessage?: string) => {
     if (!Array.isArray(models.models)) throw new Error('Models must be an array of objects');
@@ -21,17 +17,15 @@ const start = async (modelName: string, userMessage?: string) => {
 
     if (!modelConfig) throw new Error(`Model ${modelName} not found`);
 
-    const {name, model, messages: modelMessages, initOptions, completionOptions} = modelConfig;
+    const { name, model, messages: modelMessages, completionOptions } = modelConfig;
 
     // Clone messages so we don't mutate the config across requests
-    const messages: PromptMessage[] = JSON.parse(JSON.stringify(modelMessages));
+    const messages = JSON.parse(JSON.stringify(modelMessages));
 
-    console.log(name)
-
-    const initializedModel = await initModel(model, initOptions);
+    console.log(name);
 
     if (userMessage && Array.isArray(messages)) {
-        const userMsg = messages.find((message) => message.role === 'user');
+        const userMsg = messages.find((message: { role: string; content: string }) => message.role === 'user');
         if (userMsg) {
             userMsg.content += userMessage;
         } else {
@@ -39,9 +33,23 @@ const start = async (modelName: string, userMessage?: string) => {
         }
     }
 
-    const response = await createCompletion(initializedModel, messages as PromptMessage[], completionOptions);
+    const body = {
+        model,
+        messages,
+        ...completionOptions
+    };
 
-    initializedModel.dispose();
+    const res = await fetch(LM_STUDIO_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    });
+
+    if (!res.ok) {
+        throw new Error(`LM Studio request failed with status ${res.status}`);
+    }
+
+    const response = await res.json();
 
     return response.choices[0].message;
 }
