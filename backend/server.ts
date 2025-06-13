@@ -2,6 +2,7 @@ import { createCompletion, loadModel, PromptMessage } from 'gpt4all';
 import models from './models.json';
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
+import { createStory, deleteStory, getStories, getStory, updateStory } from './database';
 
 const app = express();
 const port = 8080;
@@ -62,10 +63,46 @@ app.post('/generate', jsonParser, async (req: Request, res: Response) => {
     if (modelName === 'Thorin') {
         const story = JSON.parse(response.content);
         response['score'] = await start('Dwalin', story.body).then((value) => value.score);
+        const saved = createStory({
+            title: story.title ?? '',
+            body: story.body,
+            sentiment: response['score']
+        });
+        response['id'] = saved.id;
     }
 
     res.json(response);
 })
+
+app.get('/stories', (_req: Request, res: Response) => {
+    res.json(getStories());
+});
+
+app.get('/stories/:id', (req: Request, res: Response) => {
+    const story = getStory(parseInt(req.params.id));
+    if (!story) return res.status(404).send('Not found');
+    res.json(story);
+});
+
+app.post('/stories', jsonParser, (req: Request, res: Response) => {
+    const { title, body, sentiment } = req.body;
+    const story = createStory({ title, body, sentiment });
+    res.status(201).json(story);
+});
+
+app.put('/stories/:id', jsonParser, (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    updateStory(id, req.body);
+    const updated = getStory(id);
+    if (!updated) return res.status(404).send('Not found');
+    res.json(updated);
+});
+
+app.delete('/stories/:id', (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    deleteStory(id);
+    res.status(204).end();
+});
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}...`);
