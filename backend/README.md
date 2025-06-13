@@ -15,6 +15,11 @@ bun run server.ts
 During development it is usually launched together with the frontend via
 `../start.sh`.
 
+The backend no longer loads models locally. Instead it forwards requests to an
+LM Studio instance exposing a chat completion API. Set the `LM_STUDIO_API_URL`
+environment variable if the endpoint differs from the default
+`http://localhost:1234/v1/chat/completions`.
+
 ## Database
 
 The backend uses a lightweight SQLite database stored in `stories.db`.
