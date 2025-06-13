@@ -6,15 +6,20 @@ To install dependencies:
 bun install
 ```
 
-To run the story generator UI you need both the backend and the frontend running.
+To run the story generator UI you can start both servers at once from the project
+root:
 
-Start the backend from the project root:
+```bash
+./start.sh
+```
+
+Alternatively, you can run them in separate terminals as follows:
 
 ```bash
 bun run ../backend/server.ts
 ```
 
-In another terminal start the frontend:
+and
 
 ```bash
 bun run index.ts

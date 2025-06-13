@@ -6,11 +6,14 @@ To install dependencies:
 bun install
 ```
 
-To run:
+The backend can be started on its own with:
 
 ```bash
 bun run server.ts
 ```
+
+During development it is usually launched together with the frontend via
+`../start.sh`.
 
 ## Database
 
